@@ -6,15 +6,29 @@ export function DefaultImageViewer({ url, detection }: ViewerComponentProps) {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      padding: '2rem',
-      minHeight: '200px'
+      width: '100%',
+      maxHeight: '70vh',
+      overflow: 'hidden',
+      boxSizing: 'border-box',
+      // Checkered background pattern (like Photoshop)
+      backgroundImage: `
+        linear-gradient(45deg, #d0d0d0 25%, transparent 25%),
+        linear-gradient(-45deg, #d0d0d0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #d0d0d0 75%),
+        linear-gradient(-45deg, transparent 75%, #d0d0d0 75%)
+      `,
+      backgroundSize: '20px 20px',
+      backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
     }}>
       <img
         src={url}
         alt="Preview"
         style={{
           maxWidth: '100%',
-          maxHeight: '80vh',
+          maxHeight: '70vh',
+          width: 'auto',
+          height: 'auto',
+          display: 'block',
           objectFit: 'contain',
         }}
         onError={(e) => {

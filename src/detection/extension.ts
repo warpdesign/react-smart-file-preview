@@ -34,6 +34,7 @@ const EXTENSION_TO_MIME: Record<string, string> = {
   // Documents
   '.pdf': 'application/pdf',
   '.txt': 'text/plain',
+  '.log': 'text/plain',
   '.md': 'text/markdown',
   '.html': 'text/html',
   '.htm': 'text/html',

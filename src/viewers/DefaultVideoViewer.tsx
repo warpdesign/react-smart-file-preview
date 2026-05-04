@@ -8,7 +8,15 @@ export function DefaultVideoViewer({ url, detection }: ViewerComponentProps) {
       alignItems: 'center',
       padding: '2rem',
       minHeight: '200px',
-      background: '#000'
+      // Checkered background pattern (like Photoshop)
+      backgroundImage: `
+        linear-gradient(45deg, #d0d0d0 25%, transparent 25%),
+        linear-gradient(-45deg, #d0d0d0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #d0d0d0 75%),
+        linear-gradient(-45deg, transparent 75%, #d0d0d0 75%)
+      `,
+      backgroundSize: '20px 20px',
+      backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
     }}>
       <video
         controls

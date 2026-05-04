@@ -16,6 +16,7 @@ type FilePreviewProps = {
   loadingComponent?: React.ComponentType;
   errorComponent?: React.ComponentType<{ error: Error }>;
   maxMagicLength?: number;
+  loadingDelay?: number;
 };
 
 const DEFAULT_VIEWERS: ViewerRegistry = {
@@ -97,14 +98,17 @@ export function FilePreview({
   loadingComponent: LoadingComponent = DefaultLoading,
   errorComponent: ErrorComponent = DefaultError,
   maxMagicLength = 64,
+  loadingDelay = 500,
 }: FilePreviewProps) {
   const [detection, setDetection] = useState<MimeDetectionResult | null>(null);
   const [objectUrl, setObjectUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showLoading, setShowLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const abortControllerRef = useRef<AbortController | null>(null);
   const sourceRef = useRef<FileSource>(source);
+  const loadingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Update source ref when source changes
   useEffect(() => {
@@ -118,6 +122,12 @@ export function FilePreview({
       abortControllerRef.current.abort();
     }
 
+    // Clear any pending loading timer
+    if (loadingTimerRef.current) {
+      clearTimeout(loadingTimerRef.current);
+      loadingTimerRef.current = null;
+    }
+
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
@@ -126,7 +136,15 @@ export function FilePreview({
     async function detectAndPrepare() {
       try {
         setLoading(true);
+        setShowLoading(false);
         setError(null);
+
+        // Set a timer to show loading indicator after delay
+        loadingTimerRef.current = setTimeout(() => {
+          if (!controller.signal.aborted) {
+            setShowLoading(true);
+          }
+        }, loadingDelay);
 
         // Create object URL
         createdUrl = createObjectURL(source);
@@ -141,14 +159,28 @@ export function FilePreview({
 
         if (controller.signal.aborted) return;
 
+        // Clear loading timer since we're done
+        if (loadingTimerRef.current) {
+          clearTimeout(loadingTimerRef.current);
+          loadingTimerRef.current = null;
+        }
+
         setDetection(result);
         setObjectUrl(createdUrl);
         setLoading(false);
+        setShowLoading(false);
       } catch (err: any) {
         if (controller.signal.aborted) return;
 
+        // Clear loading timer on error
+        if (loadingTimerRef.current) {
+          clearTimeout(loadingTimerRef.current);
+          loadingTimerRef.current = null;
+        }
+
         setError(err instanceof Error ? err : new Error(String(err)));
         setLoading(false);
+        setShowLoading(false);
       }
     }
 
@@ -158,12 +190,18 @@ export function FilePreview({
     return () => {
       controller.abort();
 
+      // Clear loading timer
+      if (loadingTimerRef.current) {
+        clearTimeout(loadingTimerRef.current);
+        loadingTimerRef.current = null;
+      }
+
       // Revoke object URL if it was created
       if (createdUrl) {
         revokeObjectURL(createdUrl, sourceRef.current);
       }
     };
-  }, [source, maxMagicLength]);
+  }, [source, maxMagicLength, loadingDelay]);
 
   // Merge default viewers with custom viewers
   const mergedViewers: ViewerRegistry = {
@@ -178,10 +216,12 @@ export function FilePreview({
     fallback: viewers?.fallback || DEFAULT_VIEWERS.fallback,
   };
 
-  if (loading) {
+  // Show loading component if detection is slow
+  if (loading && showLoading) {
     return <LoadingComponent />;
   }
 
+  // Show error
   if (error) {
     return <ErrorComponent error={error} />;
   }
@@ -198,11 +238,13 @@ export function FilePreview({
   }
 
   return (
-    <ViewerComponent
-      source={source}
-      url={objectUrl}
-      mimeType={detection.mimeType}
-      detection={detection}
-    />
+    <div style={{ visibility: loading ? 'hidden' : 'visible' }}>
+      <ViewerComponent
+        source={source}
+        url={objectUrl}
+        mimeType={detection.mimeType}
+        detection={detection}
+      />
+    </div>
   );
 }

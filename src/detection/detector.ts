@@ -104,7 +104,6 @@ export async function detectMimeType(
     };
   } catch (error) {
     // If detection fails, return unknown
-    console.error('MIME detection error:', error);
     return {
       mimeType: null,
       family: null,
@@ -133,8 +132,8 @@ async function getContentTypeFromHeader(
 ): Promise<string | null> {
   if (typeof source !== 'string') return null;
 
-  // Only try for HTTP/HTTPS URLs
-  if (!source.startsWith('http://') && !source.startsWith('https://')) {
+  // Try for HTTP/HTTPS/FILE URLs
+  if (!source.startsWith('http://') && !source.startsWith('https://') && !source.startsWith('file://')) {
     return null;
   }
 

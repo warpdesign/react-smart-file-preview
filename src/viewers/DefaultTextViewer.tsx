@@ -109,18 +109,6 @@ export function DefaultTextViewer({ url, detection }: ViewerComponentProps & Tex
       background: '#f5f5f5',
       minHeight: '200px'
     }}>
-      {truncated && (
-        <div style={{
-          padding: '0.75rem 1rem',
-          background: '#fff3cd',
-          color: '#856404',
-          borderLeft: '4px solid #ffc107',
-          marginBottom: '1rem',
-          fontSize: '0.875rem'
-        }}>
-          ⚠️ Text truncated to {(DEFAULT_MAX_TEXT_BYTES / 1024).toFixed(0)}KB for performance
-        </div>
-      )}
       <pre style={{
         margin: 0,
         padding: '1rem',
@@ -131,10 +119,9 @@ export function DefaultTextViewer({ url, detection }: ViewerComponentProps & Tex
         fontSize: '0.875rem',
         lineHeight: '1.5',
         fontFamily: '"Courier New", Courier, monospace',
-        whiteSpace: 'pre-wrap',
-        wordBreak: 'break-word'
+        whiteSpace: 'pre'
       }}>
-        {text}
+        {text}{truncated && '...'}
       </pre>
     </div>
   );
