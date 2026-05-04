@@ -1,0 +1,67 @@
+{
+  "name": "react-smart-file-preview",
+  "version": "0.1.0",
+  "description": "A React package for previewing browser-accessible files with intelligent MIME type detection",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./pdf": {
+      "types": "./dist/pdf.d.ts",
+      "import": "./dist/pdf.mjs",
+      "require": "./dist/pdf.js"
+    },
+    "./archive": {
+      "types": "./dist/archive.d.ts",
+      "import": "./dist/archive.mjs",
+      "require": "./dist/archive.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest",
+    "test:ci": "vitest run",
+    "type-check": "tsc --noEmit",
+    "dev": "cd test-app && npm run dev",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@vitest/ui": "^1.0.0",
+    "happy-dom": "^20.9.0",
+    "jsdom": "^23.2.0",
+    "react": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "react",
+    "file-preview",
+    "mime-type",
+    "file-viewer",
+    "typescript"
+  ],
+  "author": "Nicolas Ramz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/warpdesign/react-smart-file-preview.git"
+  },
+  "homepage": "https://github.com/warpdesign/react-smart-file-preview#readme",
+  "bugs": {
+    "url": "https://github.com/warpdesign/react-smart-file-preview/issues"
+  }
+}

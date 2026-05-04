@@ -1,0 +1,47 @@
+# Source files
+src/
+*.test.ts
+*.test.tsx
+
+# Test app
+test-app/
+
+# Development files
+tsconfig.json
+vitest.config.ts
+tsup.config.ts
+.git/
+.github/
+
+# Documentation (keep README.md, CHANGELOG.md, LICENSE)
+DEVELOPMENT.md
+NPM_PUBLISH_CHECKLIST.md
+PACKAGE_NAME_OPTIONS.md
+
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts (we want dist/ to be included)
+# dist/ is NOT in .npmignore because we want to publish it
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

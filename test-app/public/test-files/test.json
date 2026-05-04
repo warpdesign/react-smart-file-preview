@@ -1,0 +1,26 @@
+{
+  "name": "react-smart-file-preview",
+  "version": "0.1.0",
+  "description": "Test JSON file for MIME detection",
+  "features": [
+    "Magic byte detection",
+    "MIME type detection from headers",
+    "File extension fallback",
+    "Viewer registry system"
+  ],
+  "supported_formats": {
+    "images": ["JPEG", "PNG", "GIF", "WebP", "SVG"],
+    "video": ["MP4", "WebM", "OGG"],
+    "audio": ["MP3", "WAV", "OGG"],
+    "text": ["Plain text", "JSON", "Markdown"]
+  },
+  "detection_rules": {
+    "priority": [
+      "1. Magic bytes (highest confidence)",
+      "2. Content-Type header or Blob.type",
+      "3. File extension (lowest confidence)"
+    ],
+    "magic_byte_limit": 64,
+    "never_escalate": true
+  }
+}

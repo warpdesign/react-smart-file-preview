@@ -1,0 +1,40 @@
+Test Files for react-smart-file-preview
+========================================
+
+audio.mp3 (8.5MB)
+- Full music track from SoundHelix
+- Magic bytes: 49 44 33 (ID3)
+- Expected detection: audio/mpeg from magic-bytes
+
+video.mp4 (968KB)
+- Big Buck Bunny 10s clip
+- Magic bytes: 66 74 79 70 at offset 4 (ftyp)
+- Expected detection: video/mp4 from magic-bytes
+
+video.webm (1MB)
+- Big Buck Bunny WebM format
+- Magic bytes: 1A 45 DF A3 (EBML)
+- Expected detection: video/webm from magic-bytes
+
+test.json (713B)
+- JSON configuration file
+- No magic bytes (text format)
+- Expected detection: application/json from content-type-header
+
+README.md (1.3KB)
+- Markdown documentation
+- No magic bytes (text format)
+- Expected detection: text/markdown from content-type-header or file-extension
+
+fake-zip.txt (377B)
+- Text file starting with "PKZIP.EXE..."
+- Tests that "PKZIP" text is NOT detected as ZIP
+- Expected detection: text/plain from content-type-header
+
+image-renamed.txt (107B) **CRITICAL TEST**
+- Valid JPEG image renamed to .txt
+- Magic bytes: FF D8 FF (JPEG SOI marker)
+- Content-Type: text/plain (from .txt extension)
+- Tests that magic bytes OVERRIDE Content-Type and extension
+- Expected detection: image/jpeg from magic-bytes
+  with overridden: { mimeType: 'text/plain', source: 'content-type-header' }

@@ -1,0 +1,11 @@
+PKZIP.EXE is a tool for unzipping files for MS/DOS.
+
+This file starts with "PKZIP" but does NOT have a valid ZIP signature.
+
+Valid ZIP signatures are:
+- PK\x03\x04 (local file header)
+- PK\x05\x06 (end of central directory)
+- PK\x07\x08 (spanned archive)
+
+This tests that magic byte detection checks exact byte sequences,
+not just text prefixes that happen to start with "PK".
